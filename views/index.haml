@@ -20,23 +20,25 @@
 
     .well
       %h4
-        Recycling services
+        2010-2011 CPS Utilization
       %ul.inputs-list.unstyled
         %li
           %label.checkbox.inline
             %input#cbType1{:type => "checkbox"}
-            %span.filter-box.filter-blue
-            City drop-off location
+            %span.filter-box.filter-yellow
+            Underutilized
         %li
           %label.checkbox.inline
             %input#cbType2{:type => "checkbox"}
             %span.filter-box.filter-green
-            Private business
+            Efficient
         %li
           %label.checkbox.inline
             %input#cbType3{:type => "checkbox"}
             %span.filter-box.filter-red
-            Hazardous materials
+            Overcrowded
+
+    %p#resultCount.alert.alert-info.lead
 
   .span8
     #mapCanvas
