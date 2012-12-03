@@ -43,12 +43,22 @@ var MapsLib = {
     $( "#resultCount" ).html("");
   
     geocoder = new google.maps.Geocoder();
+    var styles = [
+        {
+          featureType: 'all',
+          elementType: 'all',
+          stylers: [
+            { saturation: -95 }
+          ]
+        }
+      ];
     var myOptions = {
       zoom: MapsLib.defaultZoom,
       center: MapsLib.map_centroid,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     map = new google.maps.Map($("#mapCanvas")[0],myOptions);
+    map.setOptions({styles: styles});
     
     MapsLib.searchrecords = null;
     
