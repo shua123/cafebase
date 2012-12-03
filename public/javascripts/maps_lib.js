@@ -58,6 +58,7 @@ var MapsLib = {
     if (loadRadius != "") $("#ddlRadius").val(loadRadius);
     else $("#ddlRadius").val(MapsLib.searchRadius);
     $(":checkbox").attr("checked", "checked");
+    $("#sc2:radio").attr("checked", "checked");
     $("#resultCount").hide();
      
     //run the default search
@@ -77,12 +78,14 @@ var MapsLib = {
     //best way to filter results by a type is to create a 'type' column and assign each row a number (strings work as well, but numbers are faster). then we can use the 'IN' operator and return all that are selected
     //NOTE: if your column name has spaces in it, surround it with single quotes 
     //example: var searchType = "'my filter' IN (-1,";
+    
+
     var searchType = "INCPS IN (-1,";
     if ( $("#cbType1").is(':checked')) searchType += "0,";
     if ( $("#cbType2").is(':checked')) searchType += "1,";
     if ( $("#cbType3").is(':checked')) searchType += "2,";
     whereClause += " AND " + searchType.slice(0, searchType.length - 1) + ")";
-    
+
     //-------end of filter by type code--------
     
     if (address != "") {
@@ -123,6 +126,8 @@ var MapsLib = {
   
   submitSearch: function(whereClause, map, location) {
     //get using all filters
+    
+
     MapsLib.searchrecords = new google.maps.FusionTablesLayer({
       query: {
         from:   MapsLib.fusionTableId,
@@ -190,6 +195,7 @@ var MapsLib = {
   
   query: function(selectColumns, whereClause, callback) {
     var queryStr = [];
+   
     queryStr.push("SELECT " + selectColumns);
     queryStr.push(" FROM " + MapsLib.fusionTableId);
     queryStr.push(" WHERE " + whereClause);
