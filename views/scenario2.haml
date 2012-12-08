@@ -1,0 +1,103 @@
+.row-fluid
+  .span4
+    .well
+      %h4
+        Find address
+        <small>(<a id='findMe' href='#'>find me</a>)</small>
+
+      %input#txtSearchAddress.input-block-level{:placeholder => "Enter an address or an intersection", :type => "text"}
+      
+      %label
+        within
+        %select#ddlRadius.input-small
+          %option{:value => "400"} 2 blocks
+          %option{:value => "805"} 1/2 mile
+          %option{:value => "1610"} 1 mile
+          %option{:value => "3220"} 2 miles
+      
+      %input#btnSearch.btn.btn-primary{:type => "button", :value => "Search"}
+      %button#reset.btn Reset
+
+    .well
+      %h4
+        2010-2011 School Utilization
+      %h5
+        25.5 students per classroom (Correcting for CPS Maximums)
+
+
+      %ul.inputs-list.unstyled
+        %li
+          %label.checkbox.inline
+            %input#cbType1{:type => "checkbox"}
+            %span.filter-box.filter-yellow
+            Underutilized
+        %li
+          %label.checkbox.inline
+            %input#cbType2{:type => "checkbox"}
+            %span.filter-box.filter-green
+            Efficient
+        %li
+          %label.checkbox.inline
+            %input#cbType3{:type => "checkbox"}
+            %span.filter-box.filter-red
+            Overcrowded
+
+    %p#resultCount.alert.alert-info.lead
+
+  .span8
+    #mapCanvas
+    %span.pull-right
+      Map by 
+      %a{:href => "http://twitter.com/shua123"} Josh Kalov 
+      and 
+      %a{:href => "https://github.com/derekeder/FusionTable-Map-Template-Heroku"} search template 
+      by
+      %a{:href => "http://derekeder.com"} Derek Eder
+
+- content_for :javascripts do
+  = include_javascript :"jquery.address.min"
+  = include_javascript :"http://maps.google.com/maps/api/js?sensor=false"
+  = include_javascript :"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"
+  = include_javascript :maps_lib2
+  = include_javascript :"bootstrap-popover"
+
+  :javascript
+    $(window).resize(function () {
+      var h = $(window).height(),
+        offsetTop = 85; // Calculate the top offset
+    
+      $('#mapCanvas').css('height', (h - offsetTop));
+    }).resize();
+    
+    $(function() {
+      $('label.checkbox.inline').popover();
+      
+      MapsLib.initialize();
+      $(':checkbox').click(function(){
+        MapsLib.doSearch();
+      });
+      
+      $('#btnSearch').click(function(){
+        MapsLib.doSearch();
+      });
+      
+      $('#findMe').click(function(){
+        MapsLib.findMe(); 
+        return false;
+      });
+      
+      $('#reset').click(function(){
+        $.address.parameter('address','');
+        $.address.parameter('radius','');
+        MapsLib.initialize(); 
+        return false;
+      });
+      
+      $("#txtSearchAddress").keydown(function(e){
+          var key =  e.keyCode ? e.keyCode : e.which;
+          if(key == 13) {
+              $('#btnSearch').click();
+              return false;
+          }
+      });
+    });
